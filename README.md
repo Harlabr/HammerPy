@@ -1,21 +1,24 @@
 # HammerPy 🔨
 
-Простой и эффективный нагрузочный инструмент (stress‑test) на Python с многопоточностью, цветным выводом и минималистичным ASCII‑артом.
+A simple and efficient stress‑testing tool written in Python, featuring multithreading, colored output, and a minimalistic ASCII logo.
 
 ![Python Version](https://img.shields.io/badge/python-3.6+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
+[![GitHub stars](https://img.shields.io/github/stars/Harlabr/HammerPy.svg?style=social&label=Stars)](https://github.com/Harlabr/HammerPy)
+[![GitHub forks](https://img.shields.io/github/forks/Harlabr/HammerPy.svg?style=social&label=Forks)](https://github.com/Harlabr/HammerPy)
+[![GitHub watchers](https://img.shields.io/github/watchers/Harlabr/HammerPy.svg?style=social&label=Watchers)](https://github.com/Harlabr/HammerPy)
 
-## 🚀 Возможности
+## 🚀 Features
 
-- **Многопоточность** – настраиваемое количество параллельных воркеров.
-- **Гибкая задержка** – интервал между запросами (в секундах, можно задать дробное значение).
-- **Реальная статистика** – общее число запросов, успешные/ошибочные, среднее время ответа, RPS (запросов в секунду).
-- **Отображение последних ошибок** – последние 10 ошибок с временем и кодом/типом.
-- **Автоматическое определение вашего IP и страны** (через внешние API).
-- **Красочный вывод** – основная информация зелёная, ASCII‑арт – белый.
-- **Легкий интерактивный режим** – при запуске без аргументов запрашивает параметры.
+- **Multithreading** – configurable number of parallel workers.
+- **Adjustable delay** – set the interval between requests in seconds (floating point allowed).
+- **Real‑time statistics** – total requests, successes, failures, average response time, and RPS (requests per second).
+- **Last errors display** – shows the most recent 10 errors with timestamps and status codes/types.
+- **Automatic IP & country detection** – using public APIs.
+- **Colored terminal output** – main information in green, ASCII art in white.
+- **Interactive mode** – if run without arguments, prompts for parameters.
 
-## 📦 Установка
+## 📦 Installation
 
 ```bash
 git clone https://github.com/Harlabr/HammerPy.git
@@ -23,44 +26,44 @@ cd HammerPy
 pip install requests
 ```
 
-## 🛠 Использование
+## 🛠 Usage
 
-### Командная строка
+### Command line
 
 ```bash
 python hammera.py <URL> [-t THREADS] [-d DELAY] [-r REPORT_INTERVAL]
 ```
 
-Пример:
+Example:
 ```bash
 python hammera.py https://example.com -t 20 -d 0.05 -r 3
 ```
 
-### Интерактивный режим
+### Interactive mode
 
-Просто запустите без аргументов и следуйте подсказкам:
+Just run without arguments and follow the prompts:
 ```bash
 python hammera.py
 ```
 
-## 📋 Параметры
+## 📋 Arguments
 
-| Аргумент            | Описание                                 |
-|---------------------|------------------------------------------|
-| `url`               | Целевой URL или IP-адрес (http:// опционален) |
-| `-t, --threads`     | Количество рабочих потоков (по умолчанию 10) |
-| `-d, --delay`       | Задержка между запросами в секундах (по умолчанию 0.1) |
-| `-r, --report-interval` | Интервал вывода статистики в секундах (по умолчанию 2) |
+| Argument              | Description                                 |
+|-----------------------|---------------------------------------------|
+| `url`                 | Target URL or IP address (http:// is optional) |
+| `-t, --threads`       | Number of worker threads (default: 10)      |
+| `-d, --delay`         | Delay between requests in seconds (default: 0.1) |
+| `-r, --report-interval` | Statistics output interval in seconds (default: 2) |
 
-## 📊 Пример вывода
+## 📊 Example output
 
 ```
 === HammerPy v1.0 ===
-Целевой URL: http://example.com
-Потоков: 10, задержка: 0.1 с, интервал отчёта: 2 с
-Ваш IP: 192.168.1.1, Страна: Russia
+Target URL: http://example.com
+Threads: 10, delay: 0.1 s, report interval: 2 s
+Your IP: 192.168.1.1, Country: Russia
 
-Нажмите Ctrl+C для остановки.
+Press Ctrl+C to stop.
 
 █   █  ███  █   █ █   █ █████ ████  ████  █   █ 
 █   █ █   █ ██ ██ ██ ██ █     █   █ █   █  █ █  
@@ -70,26 +73,26 @@ python hammera.py
 
 repo https://github.com/Harlabr/HammerPy/upload/main
 
-[14:32:15] Запросов: 150, Успешно: 148, Ошибок: 2, Ср. время: 0.234 с, RPS: 74.8
-  Последние ошибки:
+[14:32:15] Requests: 150, Success: 148, Errors: 2, Avg time: 0.234 s, RPS: 74.8
+  Last errors:
     14:31:59 - 404
     14:32:01 - ConnectionError
 ```
 
-## ⚠️ Важно
+## ⚠️ Important
 
-- Используйте инструмент **только** на сайтах, где у вас есть разрешение на нагрузочное тестирование.
-- Чрезмерное количество потоков и малая задержка могут вызвать отказ в обслуживании (DoS) и нарушить работу сервера.
-- Автор не несёт ответственности за неправомерное использование.
+- Use this tool **only** on websites where you have explicit permission to perform load testing.
+- Excessive threads and very low delay can cause denial‑of‑service (DoS) and disrupt server operation.
+- The author is not responsible for any misuse.
 
-## 📝 Лицензия
+## 📝 License
 
-Проект распространяется под лицензией MIT. Подробнее в файле [LICENSE](LICENSE).
+This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
 
-## 👤 Автор
+## 👤 Author
 
 **Harlabr** – [GitHub](https://github.com/Harlabr)
 
 ---
 
-⭐ Если проект полезен – поставьте звёздочку!
+⭐ If you find this project useful, please give it a star!
