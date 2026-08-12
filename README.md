@@ -79,12 +79,6 @@ repo https://github.com/Harlabr/HammerPy/upload/main
     14:32:01 - ConnectionError
 ```
 
-## ⚠️ Important
-
-- Use this tool **only** on websites where you have explicit permission to perform load testing.
-- Excessive threads and very low delay can cause denial‑of‑service (DoS) and disrupt server operation.
-- The author is not responsible for any misuse.
-
 ## 📝 License
 
 This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
