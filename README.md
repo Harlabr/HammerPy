@@ -71,7 +71,7 @@ Press Ctrl+C to stop.
 █   █ █   █ █   █ █   █ █     █  █  █       █   
 █   █ █   █ █   █ █   █ █████ █   █ █       █
 
-repo https://github.com/Harlabr/HammerPy/upload/main
+repo https://github.com/Harlabr/HammerPy
 
 [14:32:15] Requests: 150, Success: 148, Errors: 2, Avg time: 0.234 s, RPS: 74.8
   Last errors:
