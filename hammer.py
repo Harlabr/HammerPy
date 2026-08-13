@@ -65,7 +65,7 @@ def load_language():
                 data = json.load(f)
                 if "language" in data and data["language"] in ("en", "ru"):
                     lang = data["language"]
-    except:
+    except Exception:
         pass
     return lang
 
@@ -73,23 +73,27 @@ def save_language(lang):
     try:
         with open(CONFIG_FILE, "w") as f:
             json.dump({"language": lang}, f)
-    except:
+    except Exception:
         pass
 
-def get_text(key, lang, **kwargs):
+def get_text(key, lang, *args, **kwargs):
     text = TRANSLATIONS[lang].get(key, TRANSLATIONS["en"].get(key, key))
-    if kwargs:
-        return text.format(**kwargs)
+    if args or kwargs:
+        return text.format(*args, **kwargs)
     return text
 
 def get_ip_info():
     try:
         ip_resp = requests.get('https://api.ipify.org?format=json', timeout=5)
+        ip_resp.raise_for_status()
         ip = ip_resp.json().get('ip')
+        if not ip:
+            return 'Unknown', 'Unknown'
         geo_resp = requests.get(f'http://ip-api.com/json/{ip}?fields=country,countryCode', timeout=5)
+        geo_resp.raise_for_status()
         geo = geo_resp.json()
         return ip, geo.get('country', 'Unknown')
-    except Exception:
+    except (requests.RequestException, ValueError, TypeError):
         return 'Unknown', 'Unknown'
 
 class RequestWorker:
@@ -119,15 +123,15 @@ class RequestWorker:
                 elapsed = time.time() - start
                 success = resp.status_code < 400
                 status_code = resp.status_code
-            except Exception as e:
+            except requests.RequestException as e:
                 success = False
                 status_code = str(e)
                 elapsed = 0
             self.stats.add_result(success, status_code, elapsed)
             if self.delay > 0:
-                time.sleep(self.delay)
+                self.stop_event.wait(self.delay)
             else:
-                time.sleep(0.001)
+                self.stop_event.wait(0.001)
 
 class Stats:
     def __init__(self):
@@ -158,6 +162,14 @@ class Stats:
             rate = total / (time.time() - self.start_time) if (time.time() - self.start_time) > 0 else 0
             errors = list(self.last_errors)
         return total, ok, err, avg, rate, errors
+
+def validate_settings(threads, delay, report_interval):
+    if threads < 1:
+        raise ValueError("threads must be >= 1")
+    if delay < 0:
+        raise ValueError("delay must be >= 0")
+    if report_interval < 1:
+        raise ValueError("report interval must be >= 1")
 
 def main():
     lang = load_language()
@@ -217,6 +229,11 @@ def main():
         delay = args.delay if args.delay is not None else 0.1
         report_interval = args.report_interval if args.report_interval is not None else 2
 
+    try:
+        validate_settings(threads, delay, report_interval)
+    except ValueError as exc:
+        parser.error(str(exc))
+
     print(get_text("header", lang, NAME, VERSION))
     print(get_text("target", lang, url))
     print(get_text("threads_delay", lang, threads, delay, report_interval))
@@ -230,7 +247,7 @@ def main():
     workers = []
 
     for i in range(threads):
-        w = RequestWorker(url, delay, stats, stop_event, i+1)
+        w = RequestWorker(url, delay, stats, stop_event, i + 1)
         w.start()
         workers.append(w)
 
